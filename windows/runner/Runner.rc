@@ -93,7 +93,11 @@ BEGIN
             VALUE "FileDescription", "smartfarming" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "smartfarming" "\0"
+<<<<<<< HEAD
             VALUE "LegalCopyright", "Copyright (C) 2025 com.example. All rights reserved." "\0"
+=======
+            VALUE "LegalCopyright", "Copyright (C) 2026 com.example. All rights reserved." "\0"
+>>>>>>> 09c504d (Initial commit)
             VALUE "OriginalFilename", "smartfarming.exe" "\0"
             VALUE "ProductName", "smartfarming" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"

@@ -11,4 +11,8 @@ PRODUCT_NAME = smartfarming
 PRODUCT_BUNDLE_IDENTIFIER = com.example.smartfarming
 
 // The copyright displayed in application information
+<<<<<<< HEAD
 PRODUCT_COPYRIGHT = Copyright © 2025 com.example. All rights reserved.
+=======
+PRODUCT_COPYRIGHT = Copyright © 2026 com.example. All rights reserved.
+>>>>>>> 09c504d (Initial commit)
