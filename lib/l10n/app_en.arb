@@ -1,0 +1,78 @@
+{
+ "@@locale": "en",
+
+  "appTitle": "Smart Farming",
+  "@appTitle": {
+    "description": "Application Title in English"
+  },
+
+  "welcome": "Welcome",
+  "@welcome": {
+    "description": "Welcome text"
+  },
+
+  "login": "Login",
+  "@login": {
+    "description": "Login button text"
+  },
+
+  "signup": "Sign Up",
+  "@signup": {
+    "description": "Signup button text"
+  },
+
+  "email": "Email",
+  "@email": {
+    "description": "Email label"
+  },
+
+  "password": "Password",
+  "@password": {
+    "description": "Password label"
+  },
+
+  "logout": "Logout",
+  "@logout": {
+    "description": "Logout button text"
+  },
+
+  "home": "Home",
+  "@home": {
+    "description": "Home page text"
+  },
+
+  "weather": "Weather",
+  "@weather": {
+    "description": "Weather section"
+  },
+
+  "soil": "Soil",
+  "@soil": {
+    "description": "Soil section"
+  },
+
+  "price": "Market Price",
+  "@price": {
+    "description": "Crop market price"
+  },
+
+  "crop": "Crops",
+  "@crop": {
+    "description": "Crop details"
+  },
+
+  "doctor": "Agri Doctor",
+  "@doctor": {
+    "description": "Agriculture doctor section"
+  },
+
+  "chatbot": "Chatbot",
+  "@chatbot": {
+    "description": "AI Assistant"
+  },
+
+  "notifications": "Notifications",
+  "@notifications": {
+    "description": "User notifications"
+  }
+}

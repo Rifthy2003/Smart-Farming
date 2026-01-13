@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuthException;
 import 'package:flutter/material.dart';
 import '../services/auth_service.dart'; // Ensure this path matches your project structure
 
@@ -53,20 +54,47 @@ class _SignupScreenState extends State<SignupScreen> {
 
     setState(() => _isLoading = true);
 
-    // 4. Call the AuthService to create the user in Firebase
-    final user = await _authService.signUp(
-      _emailController.text.trim(),
-      _passwordController.text.trim(),
-    );
+    try {
+      // 4. Call the AuthService to create the user in Firebase
+      final user = await _authService.signUp(
+        _emailController.text.trim(),
+        _passwordController.text.trim(),
+        username: _usernameController.text.trim().isEmpty ? null : _usernameController.text.trim(),
+      );
 
-    setState(() => _isLoading = false);
+      if (!mounted) return;
 
-    if (user != null) {
-      // 5. Success! Navigate to Home or Welcome
-      _showSnackBar("Account created successfully!");
-      Navigator.pushReplacementNamed(context, '/home');
-    } else {
-      _showSnackBar("Registration failed. Please try again.");
+      setState(() => _isLoading = false);
+
+      if (user != null) {
+        // 5. Success! Navigate to Home or Welcome
+        _showSnackBar("Account created successfully!");
+        Navigator.pushReplacementNamed(context, '/home');
+      }
+    } on FirebaseAuthException catch (e) {
+      if (!mounted) return;
+      setState(() => _isLoading = false);
+
+      String msg = 'Registration failed. Please try again.';
+      switch (e.code) {
+        case 'email-already-in-use':
+          msg = 'This email is already in use. Try signing in or reset password.';
+          break;
+        case 'weak-password':
+          msg = 'Password is too weak. Use at least 6 characters.';
+          break;
+        case 'invalid-email':
+          msg = 'The email address is not valid.';
+          break;
+        default:
+          msg = e.message ?? msg;
+      }
+
+      _showSnackBar(msg);
+    } catch (e) {
+      if (!mounted) return;
+      setState(() => _isLoading = false);
+      _showSnackBar('Registration failed: ${e.toString()}');
     }
   }
 

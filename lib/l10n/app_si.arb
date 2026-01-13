@@ -1,0 +1,78 @@
+{
+  "@@locale": "si",
+
+  "appTitle": "ස්මාර්ට් කෘෂි",
+  "@appTitle": {
+    "description": "Application Title"
+  },
+
+  "welcome": "ඔබව සාදරයෙන් පිළිගනිමු",
+  "@welcome": {
+    "description": "Welcome text"
+  },
+
+  "login": "ලොග් වන්න",
+  "@login": {
+    "description": "Login button"
+  },
+
+  "signup": "ලියාපදිංචි වන්න",
+  "@signup": {
+    "description": "Signup button"
+  },
+
+  "email": "ඊමේල්",
+  "@email": {
+    "description": "Email text"
+  },
+
+  "password": "මුරපදය",
+  "@password": {
+    "description": "Password label"
+  },
+
+  "logout": "පිටවන්න",
+  "@logout": {
+    "description": "Logout button"
+  },
+
+  "home": "මුල් පිටුව",
+  "@home": {
+    "description": "Home menu text"
+  },
+
+  "weather": "කාලගුණය",
+  "@weather": {
+    "description": "Weather page"
+  },
+
+  "soil": "මැටි",
+  "@soil": {
+    "description": "Soil page"
+  },
+
+  "price": "වෙළඳ මිල",
+  "@price": {
+    "description": "Market price page"
+  },
+
+  "crop": "බෝග මාර්ගෝපදේශ",
+  "@crop": {
+    "description": "Crop guide page"
+  },
+
+  "doctor": "බෝග වෛද්‍ය",
+  "@doctor": {
+    "description": "Crop doctor page"
+  },
+
+  "chatbot": "කතා බොට්",
+  "@chatbot": {
+    "description": "Chatbot feature"
+  },
+
+  "notifications": "දැනුම්දීම්",
+  "@notifications": {
+    "description": "Notifications page"
+  }
+}
