@@ -1,0 +1,68 @@
+name: smartfarming
+description: A Flutter project for smart farming and crop recommendation.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+    
+
+  flutter_localizations:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.6
+
+  # Firebase
+  firebase_core: ^3.15.2
+  firebase_auth: ^5.5.1
+  cloud_firestore: ^5.6.12
+  google_sign_in: ^7.2.0
+
+  # UI
+  font_awesome_flutter: ^10.7.0
+
+  # Networking & AI
+  http: ^1.2.1
+  http_parser: ^4.0.2
+  google_generative_ai: ^0.4.0
+
+  # State & Localization
+  provider: ^6.1.1
+  intl: ^0.20.2
+
+  # Sensors & Device
+  geolocator: ^14.0.2
+  image_picker: ^1.0.7
+
+  # Charts & Gauges
+  syncfusion_flutter_gauges: ^32.1.22
+
+  # Local Storage
+  sqflite: ^2.3.0
+  path: ^1.9.0
+  shared_preferences: ^2.2.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+  fonts:
+    - family: NotoSans
+      # fonts:
+      #   - asset: assets/fonts/NotoSans-Regular.ttf
+      #   - asset: assets/fonts/NotoSans-Bold.ttf
+      #     weight: 700
+
+  generate: true
+
+  assets:
+    - assets/logo.png
+    - assets/background.png

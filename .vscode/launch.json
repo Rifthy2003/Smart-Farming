@@ -1,0 +1,36 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "dart",
+            "request": "launch",
+            "name": "Launch Flutter App",
+            "cwd": "${workspaceFolder}/Smart-Farming",
+            "program": "${workspaceFolder}/Smart-Farming/lib/main.dart",
+            "internalConsoleOptions": "neverOpen"
+        },
+        {
+            "name": "Smart-Farming",
+            "cwd": "Smart-Farming",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "Smart-Farming (profile mode)",
+            "cwd": "Smart-Farming",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "Smart-Farming (release mode)",
+            "cwd": "Smart-Farming",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}
