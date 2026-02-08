@@ -1,0 +1,78 @@
+{
+    "@@locale": "ta",
+
+  "appTitle": "ஸ்மார்ட் விவசாயம்",
+  "@appTitle": {
+    "description": "Application Title in Tamil"
+  },
+
+  "welcome": "வணக்கம்",
+  "@welcome": {
+    "description": "Welcome Tamil"
+  },
+
+  "login": "உள்நுழை",
+  "@login": {
+    "description": "Login Tamil"
+  },
+
+  "signup": "பதிவு செய்யவும்",
+  "@signup": {
+    "description": "Signup Tamil"
+  },
+
+  "email": "மின்னஞ்சல்",
+  "@email": {
+    "description": "Email Tamil"
+  },
+
+  "password": "கடவுச்சொல்",
+  "@password": {
+    "description": "Password Tamil"
+  },
+
+  "logout": "வெளியேறு",
+  "@logout": {
+    "description": "Logout Tamil"
+  },
+
+  "home": "முகப்பு",
+  "@home": {
+    "description": "Home Tamil"
+  },
+
+  "weather": "வானிலை",
+  "@weather": {
+    "description": "Weather Tamil"
+  },
+
+  "soil": "மண்",
+  "@soil": {
+    "description": "Soil Tamil"
+  },
+
+  "price": "சந்தை விலை",
+  "@price": {
+    "description": "Price Tamil"
+  },
+
+  "crop": "பயிர்கள்",
+  "@crop": {
+    "description": "Crops Tamil"
+  },
+
+  "doctor": "வேளாண்மை மருத்துவர்",
+  "@doctor": {
+    "description": "Doctor Tamil"
+  },
+
+  "chatbot": "சாட்போட்",
+  "@chatbot": {
+    "description": "Chatbot Tamil"
+  },
+
+  "notifications": "அறிவிப்புகள்",
+  "@notifications": {
+    "description": "Notifications Tamil"
+  }
+}
