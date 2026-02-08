@@ -19,7 +19,7 @@ class CustomPillButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
         decoration: BoxDecoration(
-          color: color ?? const Color(0xFF81C784), // Default green from your design
+          color: color ?? const Color.fromRGBO(129, 199, 132, 1), // Default green from your design
           borderRadius: BorderRadius.circular(30),
           boxShadow: const [
             BoxShadow(

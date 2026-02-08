@@ -34,7 +34,7 @@ class AuthService {
     } on FirebaseAuthException catch (e) {
       print('Signup Error: ${e.code} ${e.message}');
       // Re-throw to allow UI to show specific messages
-      throw e;
+      rethrow;
     } catch (e) {
       print('Signup Error: $e');
       rethrow;
@@ -45,11 +45,11 @@ class AuthService {
   Future<User?> signInWithGoogle() async {
     try {
       await _googleSignIn.initialize(); 
-      final GoogleSignInAccount? googleUser = await _googleSignIn.authenticate();
+      final GoogleSignInAccount googleUser = await _googleSignIn.authenticate();
       
       if (googleUser == null) return null; 
 
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth = googleUser.authentication;
 
       final AuthCredential credential = GoogleAuthProvider.credential(
         idToken: googleAuth.idToken,

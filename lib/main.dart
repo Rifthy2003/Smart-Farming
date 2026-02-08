@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-
+import 'package:smartfarming/screens/crop_selection.dart';
 
 import 'firebase_options.dart';
 import 'l10n/app_localizations.dart';
@@ -21,7 +21,7 @@ import 'screens/price_page.dart';
 import 'screens/crop_page.dart';        
 import 'screens/chatbot_page.dart';     
 import 'screens/notification_page.dart'; 
-import 'screens/doctor_page.dart';
+import 'screens/doctor_page.dart'; // make sure file exists
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,7 +32,6 @@ void main() async {
   );
   
   runApp(
-    // Wrap the app in ChangeNotifierProvider so the language can change globally
     ChangeNotifierProvider(
       create: (context) => LanguageProvider(),
       child: const SmartFarmingApp(),
@@ -45,7 +44,6 @@ class SmartFarmingApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Listen to the LanguageProvider for locale changes
     final languageProvider = Provider.of<LanguageProvider>(context);
 
     return MaterialApp(
@@ -56,7 +54,6 @@ class SmartFarmingApp extends StatelessWidget {
         useMaterial3: true,
       ),
       
-      // --- Localization Settings ---
       locale: languageProvider.currentLocale, 
       localizationsDelegates: const [
         AppLocalizations.delegate,
@@ -78,14 +75,25 @@ class SmartFarmingApp extends StatelessWidget {
         '/login': (context) => const LoginScreen(),
         '/signup': (context) => const SignupScreen(),
         '/forgot-password': (context) => const ForgotPasswordScreen(),
-        '/home': (context) => const HomeScreen(),
         '/weather': (context) => const WeatherPage(),
+        '/crop-selection': (context) => const CropSelectionPage(), // fixed
         '/soil': (context) => const SoilPage(),
         '/price': (context) => const PricePage(),
         '/crop': (context) => const CropPage(),
         '/chatbot': (context) => const ChatbotPage(),
         '/notifications': (context) => const NotificationPage(),
-        '/doctor': (context) => const DoctorPage(),
+        '/doctor': (context) => const DoctorPage(), // ✅ fixed
+      },
+
+      // --- Dynamic Route Generator for passing arguments ---
+      onGenerateRoute: (settings) {
+        if (settings.name == '/home') {
+          final username = settings.arguments as String? ?? 'Farmer';
+          return MaterialPageRoute(
+            builder: (context) => HomeScreen(username: username),
+          );
+        }
+        return null; // Let other routes handle themselves
       },
     );
   }

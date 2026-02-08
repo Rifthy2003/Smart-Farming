@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../widgets/custom_pill_button.dart'; // Import your reusable pill button
+import 'dart:ui';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -7,63 +7,141 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          // Background Image with Green Overlay
-          Container(
-            width: double.infinity,
-            height: double.infinity,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/background.png'),
-                fit: BoxFit.cover,
+      // ================= BACKGROUND GRADIENT =================
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFF43CEA2), Color(0xFF185A9D)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: Column(
+          children: [
+            const SizedBox(height: 300),
+
+            // Logo
+            Image.asset('assets/logo.png', height: 120),
+            const SizedBox(height: 10),
+
+            // Smart Farming Text
+            Stack(
+              children: [
+                Text(
+                  'Smart Farming',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.w700,
+                    fontFamily: 'Joti One',
+                    letterSpacing: 1.2,
+                    foreground: Paint()
+                      ..style = PaintingStyle.stroke
+                      ..strokeWidth = 2
+                      ..color = Colors.white.withAlpha((0.8 * 255).round()),
+                  ),
+                ),
+                const Text(
+                  'Smart Farming',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.w700,
+                    fontFamily: 'Joti One',
+                    letterSpacing: 1.2,
+                    color: Colors.white,
+                    shadows: [
+                      Shadow(
+                        offset: Offset(0.5, 0.5),
+                        blurRadius: 1.5,
+                        color: Colors.black26,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+
+            const Spacer(),
+
+            // Bottom Glass Container
+            Container(
+              width: double.infinity,
+              height: 250,
+              padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 40),
+              decoration: BoxDecoration(
+                color: Colors.white.withAlpha((0.15 * 255).round()),
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(50)),
+                border: Border.all(color: Colors.white.withAlpha((0.2 * 255).round())),
+              ),
+              child: Column(
+                children: [
+                  // ================= LOGIN BUTTON =================
+                  Container(
+                    width: 120,
+                    height: 45,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFF43CEA2), Color(0xFF185A9D)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                    ),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(30),
+                        onTap: () => Navigator.pushNamed(context, '/login'),
+                        child: const Center(
+                          child: Text(
+                            "Login",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  // ================= REGISTER BUTTON =================
+                  Container(
+                    width: 120,
+                    height: 45,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFF43CEA2), Color(0xFF185A9D)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                    ),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(30),
+                        onTap: () => Navigator.pushNamed(context, '/signup'),
+                        child: const Center(
+                          child: Text(
+                            "Sign Up",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-            child: Container(
-              color: Colors.green.withOpacity(0.6), // Green tint matching Figma
-            ),
-          ),
-          
-          Column(
-            children: [
-              const SizedBox(height: 80),
-              // Logo and Branding
-              Image.asset('assets/logo.png', height: 120),
-              const Text(
-                'smart farming',
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Serif',
-                ),
-              ),
-              const Spacer(),
-              
-              // Bottom White Container
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 40),
-                decoration: const BoxDecoration(
-                  color: Color(0xFFE8F5E9), // Light mint green background
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(50)),
-                ),
-                child: Column(
-                  children: [
-                    CustomPillButton(
-                      text: "Login",
-                      onTap: () => Navigator.pushNamed(context, '/login'),
-                    ),
-                    const SizedBox(height: 30),
-                    CustomPillButton(
-                      text: "Register",
-                      onTap: () => Navigator.pushNamed(context, '/signup'),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

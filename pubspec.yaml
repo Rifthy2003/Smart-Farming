@@ -1,5 +1,5 @@
 name: smartfarming
-description: A new Flutter project for smart farming.
+description: A Flutter project for smart farming and crop recommendation.
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -9,57 +9,51 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  # UI & Icons
+  cupertino_icons: ^1.0.6
+  font_awesome_flutter: ^10.7.0
+
+  # Localization
   flutter_localizations:
     sdk: flutter
-  # REMOVE 'generate: true' FROM HERE
-  cupertino_icons: ^1.0.6
-  
-  # Firebase & Auth
-  firebase_core: ^3.15.2
-  firebase_auth: ^5.5.1
-  google_sign_in: ^7.2.0
-  font_awesome_flutter: ^10.7.0
-  
-  # Networking, AI & Localization
+  intl: ^0.20.2
+
+  # Networking & AI
   http: ^1.2.1
   http_parser: ^4.0.2
   google_generative_ai: ^0.4.0
-  intl: ^0.20.2
-  provider: ^6.1.1
-  
-  # UI & Sensors
-  lottie: ^3.1.0
-  syncfusion_flutter_gauges: ^32.1.22
-  geolocator: ^14.0.2
+
+  # Media & Sensors
   image_picker: ^1.0.7
-  
+  geolocator: ^14.0.2
+
+  # State Management
+  provider: ^6.1.1
+
+  # Firebase
+  firebase_core: ^3.15.2
+  firebase_auth: ^5.5.1
+  cloud_firestore: ^5.6.12
+  google_sign_in: ^7.2.0
+
+  # Charts & Gauges
+  syncfusion_flutter_gauges: ^32.1.22
+
   # Local Storage
   sqflite: ^2.3.0
   path: ^1.9.0
   shared_preferences: ^2.2.2
-  cloud_firestore: ^5.6.12
-
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
 
-# THE CORRECT PLACE FOR FLUTTER SETTINGS
-
-
 flutter:
-  
   uses-material-design: true
   generate: true
 
   assets:
     - assets/logo.png
     - assets/background.png
-
-
- 
-  
-
-
-  
