@@ -22,16 +22,47 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final features = [
-      {'title': 'Weather', 'icon': Icons.wb_sunny_outlined, 'route': '/weather', 'color': Colors.orangeAccent},
-      {'title': 'Crop Selector', 'icon': Icons.grass, 'route': '/crop-selection', 'color': Colors.greenAccent},
-      {'title': 'Soil Health', 'icon': Icons.agriculture, 'route': '/soil', 'color': Colors.brown},
-      {'title': 'Market Price', 'icon': Icons.show_chart, 'route': '/price', 'color': Colors.blueAccent},
-      {'title': 'Crop Advisor', 'icon': Icons.eco_outlined, 'route': '/crop', 'color': Colors.redAccent},
-      {'title': 'Plant Doctor', 'icon': Icons.medical_services_outlined, 'route': '/doctor', 'color': Colors.purpleAccent},
+      {
+        'title': 'Weather',
+        'icon': Icons.wb_sunny_outlined,
+        'route': '/weather',
+        'color': Colors.orangeAccent
+      },
+      {
+        'title': 'Crop Selector',
+        'icon': Icons.grass,
+        'route': '/crop-selection',
+        'color': Colors.greenAccent
+      },
+      {
+        'title': 'Soil Health',
+        'icon': Icons.agriculture,
+        'route': '/soil',
+        'color': Colors.brown
+      },
+      {
+        'title': 'Market Price',
+        'icon': Icons.show_chart,
+        'route': '/price',
+        'color': Colors.blueAccent
+      },
+      {
+        'title': 'Crop Advisor',
+        'icon': Icons.eco_outlined,
+        'route': '/crop',
+        'color': Colors.redAccent
+      },
+      {
+        'title': 'Plant Doctor',
+        'icon': Icons.medical_services_outlined,
+        'route': '/doctor',
+        'color': Colors.purpleAccent
+      },
     ];
 
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
-      // ================= FULL SCREEN BACKGROUND =================
       body: Container(
         width: double.infinity,
         height: double.infinity,
@@ -48,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // ===== WELCOME HEADER WITH GLASS EFFECT =====
+                // ===== WELCOME HEADER =====
                 _glassContainer(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,51 +111,69 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 const SizedBox(height: 12),
 
-                // ===== FEATURE CARDS FIXED =====
+                // ===== FEATURE CARDS RESPONSIVE =====
                 Expanded(
-                  child: GridView.count(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 16,
-                    mainAxisSpacing: 16,
-                    childAspectRatio: 2.8,
-                    physics: const NeverScrollableScrollPhysics(), // fixed cards
-                    children: features.map((f) {
-                      return _glassContainer(
-                        gradient: LinearGradient(
-                          colors: [
-                            (f['color'] as Color).withAlpha((0.5 * 255).round()),
-                            (f['color'] as Color).withAlpha((0.25 * 255).round()),
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      final crossAxisCount =
+                          constraints.maxWidth > 600 ? 3 : 2; // 3 columns on large screens
+                      final childAspectRatio =
+                          constraints.maxWidth / constraints.maxHeight * 1.5;
+
+                      return GridView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: crossAxisCount,
+                          crossAxisSpacing: 16,
+                          mainAxisSpacing: 16,
+                          childAspectRatio: childAspectRatio,
                         ),
-                        child: InkWell(
-                          onTap: () => Navigator.pushNamed(context, f['route'] as String),
-                          child: Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(12),
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: f['color'] as Color,
-                                ),
-                                child: Icon(f['icon'] as IconData, color: Colors.white, size: 28),
+                        itemCount: features.length,
+                        itemBuilder: (context, index) {
+                          final f = features[index];
+                          return _glassContainer(
+                            gradient: LinearGradient(
+                              colors: [
+                                (f['color'] as Color)
+                                    .withAlpha((0.5 * 255).round()),
+                                (f['color'] as Color)
+                                    .withAlpha((0.25 * 255).round()),
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            child: InkWell(
+                              onTap: () =>
+                                  Navigator.pushNamed(context, f['route'] as String),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(12),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: f['color'] as Color,
+                                    ),
+                                    child: Icon(f['icon'] as IconData,
+                                        color: Colors.white, size: 28),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: Text(
+                                      f['title'] as String,
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  const Icon(Icons.arrow_forward_ios,
+                                      color: Colors.white70, size: 16),
+                                ],
                               ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: Text(
-                                  f['title'] as String,
-                                  style: const TextStyle(
-                                      color: Colors.white, fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                              const Icon(Icons.arrow_forward_ios,
-                                  color: Colors.white70, size: 16),
-                            ],
-                          ),
-                        ),
+                            ),
+                          );
+                        },
                       );
-                    }).toList(),
+                    },
                   ),
                 ),
               ],
@@ -148,8 +197,10 @@ class _HomeScreenState extends State<HomeScreen> {
           onTap: _onItemTapped,
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-            BottomNavigationBarItem(icon: Icon(Icons.notifications_none), label: 'Alerts'),
-            BottomNavigationBarItem(icon: Icon(Icons.smart_toy_outlined), label: 'AI Bot'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.notifications_none), label: 'Alerts'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.smart_toy_outlined), label: 'AI Bot'),
           ],
         ),
       ),

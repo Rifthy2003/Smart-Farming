@@ -275,7 +275,16 @@ class _CropSelectionPageState extends State<CropSelectionPage>
                   onTapUp: (_) {
                     _btnAnimationController.reverse();
                     recommendCrop();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(recommendedCrop.isEmpty
+                            ? 'No suitable crop found'
+                            : 'Recommended: $recommendedCrop'),
+                        duration: const Duration(seconds: 3),
+                      ),
+                    );
                   },
+                  onTapCancel: () => _btnAnimationController.reverse(),
                   child: ScaleTransition(
                     scale: _btnAnimation,
                     child: _glassBubble(
