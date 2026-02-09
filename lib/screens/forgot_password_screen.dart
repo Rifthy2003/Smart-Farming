@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class ForgotPasswordScreen extends StatelessWidget {
+class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
+
+  @override
+  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
+}
+
+class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+  final TextEditingController _emailController = TextEditingController();
 
   // ================= GLASS CONTAINER =================
   Widget _glassContainer({required Widget child, EdgeInsetsGeometry? padding}) {
@@ -30,6 +38,31 @@ class ForgotPasswordScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  // ================= SEND RESET LINK =================
+  Future<void> _sendResetLink() async {
+    final email = _emailController.text.trim();
+
+    if (email.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please enter your email")),
+      );
+      return;
+    }
+
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Password reset link sent! Check your email."),
+        ),
+      );
+    } on FirebaseAuthException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error: ${e.message}")),
+      );
+    }
   }
 
   @override
@@ -87,29 +120,25 @@ class ForgotPasswordScreen extends StatelessWidget {
                         // ================= GLASS-STYLE EMAIL INPUT =================
                         _glassContainer(
                           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                          child: const TextField(
-                            style: TextStyle(color: Colors.white),
-                            decoration: InputDecoration(
+                          child: TextField(
+                            controller: _emailController,
+                            style: const TextStyle(color: Colors.white),
+                            decoration: const InputDecoration(
                               hintText: 'Enter your email',
                               hintStyle: TextStyle(color: Colors.white60),
                               prefixIcon: Icon(Icons.email, color: Colors.white70),
                               border: InputBorder.none,
                             ),
+                            keyboardType: TextInputType.emailAddress,
                           ),
                         ),
                         const SizedBox(height: 30),
 
-                        // ================= SEND RESET LINK BUTTON WITH FIXED WIDTH 200px =================
+                        // ================= SEND RESET LINK BUTTON =================
                         SizedBox(
                           width: 200, // fixed width
                           child: ElevatedButton(
-                            onPressed: () {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Password reset link sent!'),
-                                ),
-                              );
-                            },
+                            onPressed: _sendResetLink,
                             style: ElevatedButton.styleFrom(
                               padding: EdgeInsets.zero,
                               shape: RoundedRectangleBorder(

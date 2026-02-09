@@ -3,8 +3,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:smartfarming/screens/crop_selection.dart';
-
 import 'firebase_options.dart';
+
+
 import 'l10n/app_localizations.dart';
 import 'provider/language_provider.dart';
 

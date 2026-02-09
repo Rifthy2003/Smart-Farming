@@ -50,6 +50,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "82661131750-dvqbe0b3v87ugbeij40tpgg14hrm33on.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.smartfarming",
+            "certificate_hash": "a39dc0d805dba44e19fc67567fc148dd55d45299"
+          }
+        },
+        {
           "client_id": "82661131750-biqhscis3n2g8dgf1ibf3uqa9cg79nmb.apps.googleusercontent.com",
           "client_type": 3
         }

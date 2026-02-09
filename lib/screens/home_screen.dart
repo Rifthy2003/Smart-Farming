@@ -156,7 +156,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     child: Icon(f['icon'] as IconData,
                                         color: Colors.white, size: 28),
                                   ),
-                                  const SizedBox(width: 12),
+                                  const SizedBox(width: 14),
                                   Expanded(
                                     child: Text(
                                       f['title'] as String,
