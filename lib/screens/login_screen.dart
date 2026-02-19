@@ -278,9 +278,11 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                             Navigator.pushReplacementNamed(context, '/home', arguments: user.displayName ?? 'Farmer');
                                           }
                                         } catch (_) {
-                                          if (mounted) ScaffoldMessenger.of(context).showSnackBar(
+                                          if (mounted) {
+                                            ScaffoldMessenger.of(context).showSnackBar(
                                             const SnackBar(content: Text('Google sign-in failed')),
                                           );
+                                          }
                                         } finally {
                                           if (mounted) setState(() => _isGoogleLoading = false);
                                         }
