@@ -46,6 +46,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '82661131750',
     projectId: 'smart-farming-9ac26',
     authDomain: 'smart-farming-9ac26.firebaseapp.com',
+    databaseURL: 'https://smart-farming-9ac26-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'smart-farming-9ac26.firebasestorage.app',
     measurementId: 'G-4CJ5FLZGZK',
   );
@@ -55,6 +56,7 @@ class DefaultFirebaseOptions {
     appId: '1:82661131750:android:132aaa0e836ab58f8d4227',
     messagingSenderId: '82661131750',
     projectId: 'smart-farming-9ac26',
+    databaseURL: 'https://smart-farming-9ac26-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'smart-farming-9ac26.firebasestorage.app',
   );
 
@@ -63,6 +65,7 @@ class DefaultFirebaseOptions {
     appId: '1:82661131750:ios:5429febc76481bfe8d4227',
     messagingSenderId: '82661131750',
     projectId: 'smart-farming-9ac26',
+    databaseURL: 'https://smart-farming-9ac26-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'smart-farming-9ac26.firebasestorage.app',
     iosClientId: '82661131750-a5kldkid34q8or9sq2ft0rg0of08tf11.apps.googleusercontent.com',
     iosBundleId: 'com.example.smartfarming',
@@ -73,6 +76,7 @@ class DefaultFirebaseOptions {
     appId: '1:82661131750:ios:5429febc76481bfe8d4227',
     messagingSenderId: '82661131750',
     projectId: 'smart-farming-9ac26',
+    databaseURL: 'https://smart-farming-9ac26-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'smart-farming-9ac26.firebasestorage.app',
     iosClientId: '82661131750-a5kldkid34q8or9sq2ft0rg0of08tf11.apps.googleusercontent.com',
     iosBundleId: 'com.example.smartfarming',
@@ -84,6 +88,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '82661131750',
     projectId: 'smart-farming-9ac26',
     authDomain: 'smart-farming-9ac26.firebaseapp.com',
+    databaseURL: 'https://smart-farming-9ac26-default-rtdb.asia-southeast1.firebasedatabase.app/',
     storageBucket: 'smart-farming-9ac26.firebasestorage.app',
     measurementId: 'G-VL6JC830C0',
   );

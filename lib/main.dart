@@ -2,39 +2,38 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:smartfarming/screens/crop_selection.dart';
+
 import 'firebase_options.dart';
-
-
 import 'l10n/app_localizations.dart';
 import 'provider/language_provider.dart';
 
-// Import all your screens
+// Screens
 import 'screens/splash_screen.dart';
 import 'screens/welcome_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/signup_screen.dart';
 import 'screens/forgot_password_screen.dart';
-import 'screens/home_screen.dart';      
-import 'screens/weather_page.dart';     
-import 'screens/soil_page.dart';        
-import 'screens/price_page.dart';       
-import 'screens/crop_page.dart';        
-import 'screens/chatbot_page.dart';     
-import 'screens/notification_page.dart'; 
-import 'screens/doctor_page.dart'; // make sure file exists
+import 'screens/home_screen.dart';
+import 'screens/weather_page.dart';
+import 'screens/soil_page.dart';
+import 'screens/price_page.dart';
+import 'screens/crop_page.dart';
+import 'screens/chatbot_page.dart';
+import 'screens/notification_page.dart';
+import 'screens/doctor_page.dart';
+import 'screens/crop_selection.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  // Initialize Firebase
+
+  // 🔥 Initialize Firebase
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  
+
   runApp(
     ChangeNotifierProvider(
-      create: (context) => LanguageProvider(),
+      create: (_) => LanguageProvider(),
       child: const SmartFarmingApp(),
     ),
   );
@@ -50,12 +49,14 @@ class SmartFarmingApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Smart Farming',
+
       theme: ThemeData(
         primarySwatch: Colors.green,
         useMaterial3: true,
       ),
-      
-      locale: languageProvider.currentLocale, 
+
+      // 🌍 Localization
+      locale: languageProvider.currentLocale,
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -63,13 +64,15 @@ class SmartFarmingApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [
-        Locale('en'), // English
-        Locale('ta'), // Tamil
-        Locale('si'), // Sinhala
+        Locale('en'),
+        Locale('ta'),
+        Locale('si'),
       ],
 
-      // --- Navigation Routes ---
-      initialRoute: '/', 
+      // 🚀 Initial Route
+      initialRoute: '/',
+
+      // 📌 Static Routes
       routes: {
         '/': (context) => const SplashScreen(),
         '/welcome': (context) => const WelcomeScreen(),
@@ -77,24 +80,27 @@ class SmartFarmingApp extends StatelessWidget {
         '/signup': (context) => const SignupScreen(),
         '/forgot-password': (context) => const ForgotPasswordScreen(),
         '/weather': (context) => const WeatherPage(),
-        '/crop-selection': (context) => const CropSelectionPage(), // fixed
+        '/crop-selection': (context) => const CropSelectionPage(),
         '/soil': (context) => const SoilPage(),
         '/price': (context) => const PricePage(),
         '/crop': (context) => const CropPage(),
         '/chatbot': (context) => const ChatbotPage(),
         '/notifications': (context) => const NotificationPage(),
-        '/doctor': (context) => const DoctorPage(), // ✅ fixed
+        '/doctor': (context) => const DoctorPage(),
       },
 
-      // --- Dynamic Route Generator for passing arguments ---
+      // 🔄 Dynamic Routes
       onGenerateRoute: (settings) {
         if (settings.name == '/home') {
-          final username = settings.arguments as String? ?? 'Farmer';
+          final username =
+              settings.arguments as String? ?? 'Farmer';
+
           return MaterialPageRoute(
-            builder: (context) => HomeScreen(username: username),
+            builder: (context) =>
+                HomeScreen(username: username),
           );
         }
-        return null; // Let other routes handle themselves
+        return null;
       },
     );
   }

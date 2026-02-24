@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 
+import 'rice_detail_page.dart';
+import 'wheat_detail_page.dart';
+import 'chili_detail_page.dart';
+import 'tomato_detail_page.dart';
+
 class CropPage extends StatelessWidget {
   const CropPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Gradient background instead of WeatherBackground
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -23,7 +27,6 @@ class CropPage extends StatelessWidget {
               children: [
                 const SizedBox(height: 20),
 
-                // Glass-style header
                 _glassBubble(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
                   child: Row(
@@ -47,7 +50,6 @@ class CropPage extends StatelessWidget {
 
                 const SizedBox(height: 20),
 
-                // Crops grid area with glass bubbles
                 Expanded(
                   child: GridView.count(
                     crossAxisCount: 2,
@@ -55,10 +57,10 @@ class CropPage extends StatelessWidget {
                     crossAxisSpacing: 16,
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     children: [
-                      _buildCropCard("Rice", "Stage: Harvesting"),
-                      _buildCropCard("Wheat", "Stage: Growing"),
-                      _buildCropCard("Chili", "Stage: Seedling"),
-                      _buildCropCard("Tomato", "Stage: Flowering"),
+                      _buildCard(context, "Rice", "Stage: Harvesting", const RiceDetailPage()),
+                      _buildCard(context, "Wheat", "Stage: Growing", const WheatDetailPage()),
+                      _buildCard(context, "Chili", "Stage: Seedling", const ChiliDetailPage()),
+                      _buildCard(context, "Tomato", "Stage: Flowering", const TomatoDetailPage()),
                     ],
                   ),
                 ),
@@ -67,8 +69,6 @@ class CropPage extends StatelessWidget {
           ),
         ),
       ),
-
-      // Floating Add Button
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         backgroundColor: Colors.greenAccent.withAlpha((0.9 * 255).round()),
@@ -77,60 +77,66 @@ class CropPage extends StatelessWidget {
     );
   }
 
-  Widget _buildCropCard(String name, String stage) {
-    return _glassBubble(
-      padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(Icons.eco, size: 50, color: Colors.greenAccent),
-          const SizedBox(height: 12),
-          Text(
-            name,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-              color: Colors.white,
+  Widget _buildCard(BuildContext context, String name, String stage, Widget page) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => page),
+        );
+      },
+      child: _glassBubble(
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.eco, size: 40, color: Colors.greenAccent),
+            const SizedBox(height: 8),
+            Text(
+              name,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+                color: Colors.white,
+              ),
+              textAlign: TextAlign.center,
             ),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            stage,
-            style: const TextStyle(color: Colors.white70, fontSize: 14),
-          ),
-        ],
+            const SizedBox(height: 4),
+            Text(
+              stage,
+              style: const TextStyle(color: Colors.white70, fontSize: 12),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
-// Glass bubble widget (Chatbot-style)
 Widget _glassBubble({
   required Widget child,
-  double? height,
   EdgeInsetsGeometry? padding,
-  List<Color>? gradientColors,
 }) {
   return ClipRRect(
     borderRadius: BorderRadius.circular(24),
     child: BackdropFilter(
       filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
       child: Container(
-        height: height,
         padding: padding,
         margin: const EdgeInsets.symmetric(vertical: 6),
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: gradientColors ??
-                [
-                  Colors.white.withAlpha((0.15 * 255).round()),
-                  Colors.white.withAlpha((0.05 * 255).round()),
-                ],
+            colors: [
+              Colors.white.withAlpha((0.15 * 255).round()),
+              Colors.white.withAlpha((0.05 * 255).round()),
+            ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
           borderRadius: BorderRadius.circular(24),
-          border: Border.all(color: Colors.white.withAlpha((0.2 * 255).round())),
+          border: Border.all(
+              color: Colors.white.withAlpha((0.2 * 255).round())),
           boxShadow: const [
             BoxShadow(
               color: Colors.black26,

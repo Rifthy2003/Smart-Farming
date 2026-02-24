@@ -15,7 +15,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
   bool _isTyping = false;
 
   // Replace with your actual Gemini API Key
-  final String _apiKey = "YOUR_API_KEY_HERE";
+  final String _apiKey = "AIzaSyADifM0OsBdwWFYnOiDC2mveLDX4b8xDo4";
   late final GenerativeModel _model;
   late final ChatSession _chat;
 

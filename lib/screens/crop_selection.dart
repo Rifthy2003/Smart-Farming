@@ -1,141 +1,15 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
-import 'package:geolocator/geolocator.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:syncfusion_flutter_gauges/gauges.dart';
+import 'package:firebase_database/firebase_database.dart';
 
-class CropSelectionPage extends StatefulWidget {
+class CropSelectionPage extends StatelessWidget {
   const CropSelectionPage({super.key});
-
-  @override
-  State<CropSelectionPage> createState() => _CropSelectionPageState();
-}
-
-class _CropSelectionPageState extends State<CropSelectionPage>
-    with SingleTickerProviderStateMixin {
-  final TextEditingController tempController = TextEditingController();
-  final TextEditingController moistureController = TextEditingController();
-  final TextEditingController phController = TextEditingController();
-  final TextEditingController ecController = TextEditingController();
-
-  String soilType = 'Loamy';
-  String recommendedCrop = '';
-  bool isLoadingWeather = true;
-
-  double humidity = 0;
-  double windSpeed = 0;
-
-  final String apiKey = "a45cc9612248502e3a5fe5930242e57b";
-
-  late AnimationController _btnAnimationController;
-  late Animation<double> _btnAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    fetchWeather();
-
-    _btnAnimationController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 200));
-    _btnAnimation = Tween<double>(begin: 1, end: 0.95)
-        .animate(CurvedAnimation(parent: _btnAnimationController, curve: Curves.easeInOut));
-  }
-
-  @override
-  void dispose() {
-    _btnAnimationController.dispose();
-    super.dispose();
-  }
-
-  Future<void> fetchWeather() async {
-    try {
-      Position position =
-          await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-      final lat = position.latitude;
-      final lon = position.longitude;
-
-      final url =
-          "https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lon&units=metric&appid=$apiKey";
-
-      final res = await http.get(Uri.parse(url));
-
-      if (res.statusCode == 200) {
-        final data = json.decode(res.body);
-        setState(() {
-          humidity = data['main']['humidity'].toDouble();
-          windSpeed = data['wind']['speed'].toDouble();
-          isLoadingWeather = false;
-        });
-      } else {
-        throw "Failed to load weather";
-      }
-    } catch (e) {
-      setState(() {
-        isLoadingWeather = false;
-      });
-      debugPrint("Weather Error: $e");
-    }
-  }
-
-  void recommendCrop() {
-    double temp = double.tryParse(tempController.text) ?? 0;
-    double moisture = double.tryParse(moistureController.text) ?? 0;
-    double ph = double.tryParse(phController.text) ?? 0;
-    double ec = double.tryParse(ecController.text) ?? 0;
-
-    List<Crop> suitableCrops = crops.where((crop) {
-      return temp >= crop.minTemp &&
-          temp <= crop.maxTemp &&
-          moisture >= crop.minMoisture &&
-          moisture <= crop.maxMoisture &&
-          ph >= crop.minPH &&
-          ph <= crop.maxPH &&
-          ec >= crop.minEC &&
-          ec <= crop.maxEC &&
-          crop.soilTypes.contains(soilType) &&
-          humidity >= crop.minHumidity &&
-          humidity <= crop.maxHumidity &&
-          windSpeed >= crop.minWindSpeed &&
-          windSpeed <= crop.maxWindSpeed;
-    }).toList();
-
-    setState(() {
-      recommendedCrop =
-          suitableCrops.isEmpty ? 'No suitable crop found' : suitableCrops.first.name;
-    });
-  }
-
-  Widget _inputField(String label, TextEditingController controller, Icon icon) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: TextField(
-        controller: controller,
-        keyboardType: TextInputType.number,
-        style: const TextStyle(color: Colors.white),
-        decoration: InputDecoration(
-          labelText: label,
-          labelStyle: const TextStyle(color: Colors.white70),
-          prefixIcon: icon,
-          enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white38),
-            borderRadius: BorderRadius.all(Radius.circular(16)),
-          ),
-          focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white70),
-            borderRadius: BorderRadius.all(Radius.circular(16)),
-          ),
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Full screen gradient background
       body: Container(
-        width: double.infinity,
-        height: double.infinity,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [Color(0xFF43CEA2), Color(0xFF185A9D)],
@@ -144,14 +18,15 @@ class _CropSelectionPageState extends State<CropSelectionPage>
           ),
         ),
         child: SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
               children: [
                 const SizedBox(height: 20),
 
-                // ===== Header =====
+                // Header
                 _glassBubble(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
                   child: Row(
                     children: [
                       IconButton(
@@ -159,176 +34,137 @@ class _CropSelectionPageState extends State<CropSelectionPage>
                         onPressed: () => Navigator.pop(context),
                       ),
                       const SizedBox(width: 8),
-                      const Expanded(
-                        child: Text(
-                          "Crop Advisor",
-                          style: TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                        ),
-                      ),
-                    ],
-                  ),
-                  padding: const EdgeInsets.all(20),
-                ),
-
-                const SizedBox(height: 20),
-
-                // ===== Weather Card =====
-                _glassBubble(
-                  child: isLoadingWeather
-                      ? const Center(child: CircularProgressIndicator(color: Colors.white))
-                      : Column(
-                          children: [
-                            const Text("Current Weather",
-                                style: TextStyle(
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white)),
-                            const SizedBox(height: 12),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Column(
-                                  children: [
-                                    const Icon(Icons.water_drop, color: Colors.white),
-                                    const SizedBox(height: 4),
-                                    Text("${humidity.toStringAsFixed(0)}%",
-                                        style: const TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold)),
-                                    const Text("Humidity",
-                                        style: TextStyle(color: Colors.white70)),
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    const Icon(Icons.air, color: Colors.white),
-                                    const SizedBox(height: 4),
-                                    Text("${windSpeed.toStringAsFixed(1)} m/s",
-                                        style: const TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold)),
-                                    const Text("Wind Speed",
-                                        style: TextStyle(color: Colors.white70)),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                  padding: const EdgeInsets.all(20),
-                ),
-
-                const SizedBox(height: 20),
-
-                // ===== Soil Inputs =====
-                _glassBubble(
-                  child: Column(
-                    children: [
-                      const Text('Enter Soil Data',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18)),
-                      _inputField("Soil Temperature (°C)", tempController,
-                          const Icon(Icons.thermostat, color: Colors.white)),
-                      _inputField("Soil Moisture (%)", moistureController,
-                          const Icon(Icons.water, color: Colors.white)),
-                      _inputField("Soil pH", phController,
-                          const Icon(Icons.science, color: Colors.white)),
-                      _inputField("Soil EC (dS/m)", ecController,
-                          const Icon(Icons.grass, color: Colors.white)),
-                      const SizedBox(height: 12),
-                      DropdownButtonFormField<String>(
-                        value: soilType,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white.withAlpha((0.1 * 255).round()),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide: BorderSide.none),
-                        ),
-                        dropdownColor: Colors.blue.withAlpha((0.8 * 255).round()),
-                        style: const TextStyle(color: Colors.white),
-                        onChanged: (value) {
-                          setState(() {
-                            soilType = value!;
-                          });
-                        },
-                        items: <String>['Loamy', 'Sandy', 'Clay']
-                            .map<DropdownMenuItem<String>>(
-                                (type) => DropdownMenuItem(value: type, child: Text(type)))
-                            .toList(),
-                      ),
-                    ],
-                  ),
-                  padding: const EdgeInsets.all(20),
-                ),
-
-                const SizedBox(height: 16),
-
-                // ===== Recommend Button =====
-                GestureDetector(
-                  onTapDown: (_) => _btnAnimationController.forward(),
-                  onTapUp: (_) {
-                    _btnAnimationController.reverse();
-                    recommendCrop();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(recommendedCrop.isEmpty
-                            ? 'No suitable crop found'
-                            : 'Recommended: $recommendedCrop'),
-                        duration: const Duration(seconds: 3),
-                      ),
-                    );
-                  },
-                  onTapCancel: () => _btnAnimationController.reverse(),
-                  child: ScaleTransition(
-                    scale: _btnAnimation,
-                    child: _glassBubble(
-                      child: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Icon(Icons.agriculture, color: Colors.white),
-                              SizedBox(width: 8),
-                              Text('Recommend Crop',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18)),
-                            ],
-                          ),
-                        ),
-                      ),
-                      padding: const EdgeInsets.all(16),
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 16),
-
-                // ===== Recommendation Result =====
-                _glassBubble(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Text(
-                      recommendedCrop.isEmpty
-                          ? 'Your recommended crop will appear here'
-                          : 'Recommended Crop: $recommendedCrop',
-                      style: const TextStyle(
+                      const Text(
+                        "Crop Selection",
+                        style: TextStyle(
+                          fontSize: 22,
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 18),
-                      textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 20),
+
+                // 🔥 REALTIME DATABASE STREAM
+                Expanded(
+                  child: StreamBuilder<DatabaseEvent>(
+                    stream: FirebaseDatabase.instance
+                        .ref('SensorData')
+                        .onValue,
+                    builder: (context, snapshot) {
+                      // ignore: avoid_print
+                      print('CropSelection RTDB connectionState=${snapshot.connectionState}, hasData=${snapshot.hasData}, error=${snapshot.error}');
+
+                      if (snapshot.connectionState ==
+                          ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(
+                              color: Colors.white),
+                        );
+                      }
+
+                      if (!snapshot.hasData || snapshot.data!.snapshot.value == null) {
+                        return const Center(
+                          child: Text(
+                            "No Soil Data Available",
+                            style: TextStyle(
+                                color: Colors.white, fontSize: 18),
+                          ),
+                        );
+                      }
+
+                      final value = snapshot.data!.snapshot.value;
+                      // ignore: avoid_print
+                      print('RTDB SensorData value -> $value');
+
+                      if (value is! Map) {
+                        return Center(
+                          child: Text(
+                            'Unexpected data: $value',
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 14),
+                          ),
+                        );
+                      }
+
+                      final raw = value as Map<dynamic, dynamic>;
+                      final data = Map<String, dynamic>.from(raw);
+
+                      double parse(dynamic w) {
+                        if (w == null) return 0.0;
+                        if (w is num) return w.toDouble();
+                        return double.tryParse(w.toString()) ?? 0.0;
+                      }
+
+                      double ph = parse(data['ph'] ?? data['pH']);
+                      double ec = parse(data['ec'] ?? data['ec_value']);
+                      double sm = parse(data['sm'] ?? data['humidity']);
+                      double st = parse(data['st'] ?? data['temperature']);
+
+                      // ignore: avoid_print
+                      print('parsed -> ph:$ph ec:$ec sm:$sm st:$st');
+
+                      return GridView.count(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 16,
+                        crossAxisSpacing: 16,
+                        padding:
+                            const EdgeInsets.symmetric(vertical: 8),
+                        children: [
+                          _buildGauge("PH", ph),
+                          _buildGauge("EC", ec),
+                          _buildGauge("SM", sm),
+                          _buildGauge("ST", st),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+
+                const SizedBox(height: 20),
+
+                // ===== CROP OPTIONS =====
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Select a crop',
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  padding: const EdgeInsets.all(20),
                 ),
+                const SizedBox(height: 12),
+                SizedBox(
+                  height: 200,
+                  child: GridView.count(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 16,
+                    crossAxisSpacing: 16,
+                    children: [
+                      _buildCropCard(context, 'Rice'),
+                      _buildCropCard(context, 'Wheat'),
+                      _buildCropCard(context, 'Tomato'),
+                      _buildCropCard(context, 'Chili'),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 20),
+
+                Row(
+                  children: [
+                    _buildActionButton(context, "START", Colors.greenAccent),
+                    const SizedBox(width: 16),
+                    _buildActionButton(context, "RESET", Colors.redAccent),
+                  ],
+                ),
+
+                const SizedBox(height: 40),
               ],
             ),
           ),
@@ -336,9 +172,152 @@ class _CropSelectionPageState extends State<CropSelectionPage>
       ),
     );
   }
+
+  Widget _buildGauge(String label, double value) {
+    return _glassBubble(
+      padding: const EdgeInsets.all(8),
+      child: SfRadialGauge(
+        axes: <RadialAxis>[
+          RadialAxis(
+            minimum: 0,
+            maximum: 100,
+            showLabels: false,
+            showTicks: false,
+            axisLineStyle: const AxisLineStyle(
+              thickness: 0.2,
+              cornerStyle: CornerStyle.bothCurve,
+              thicknessUnit: GaugeSizeUnit.factor,
+              color: Colors.white30,
+            ),
+            pointers: <GaugePointer>[
+              NeedlePointer(
+                value: value,
+                needleLength: 0.6,
+                needleColor: Colors.greenAccent,
+              )
+            ],
+            annotations: <GaugeAnnotation>[
+              GaugeAnnotation(
+                widget: Column(
+                  mainAxisAlignment:
+                      MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      label,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 16,
+                      ),
+                    ),
+                    Text(
+                      value.toStringAsFixed(1),
+                      style: const TextStyle(
+                        color: Colors.greenAccent,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
+                angle: 90,
+                positionFactor: 0.8,
+              )
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _buildActionButton(BuildContext context, String label, Color color) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: () async {
+          if (label == "START") {
+            // START button: trigger sensor sampling
+            print('START button pressed');
+            await FirebaseDatabase.instance
+                .ref('SensorData')
+                .update({
+              "sampling": true,
+              "timestamp": DateTime.now().millisecondsSinceEpoch,
+            }).then((_) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Sensor sampling started')),
+              );
+            }).catchError((e) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Error: $e')),
+              );
+            });
+          } else if (label == "RESET") {
+            // RESET button: clear all sensor values
+            print('RESET button pressed');
+            await FirebaseDatabase.instance
+                .ref('SensorData')
+                .set({
+              "pH": 0.0,
+              "ec_value": 0.0,
+              "humidity": 0.0,
+              "temperature": 0.0,
+              "sampling": false,
+            }).then((_) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Sensor data reset')),
+              );
+            }).catchError((e) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Error: $e')),
+              );
+            });
+          }
+        },
+        child: _glassBubble(
+          padding:
+              const EdgeInsets.symmetric(vertical: 16),
+          child: Center(
+            child: Text(
+              label,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: color,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCropCard(BuildContext context, String crop) {
+    return GestureDetector(
+      onTap: () {
+        // navigate to crop detail page or handle selection
+      },
+      child: _glassBubble(
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.agriculture, size: 40, color: Colors.greenAccent),
+            const SizedBox(height: 8),
+            Text(
+              crop,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+                color: Colors.white,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
-// =================== Glass Bubble Widget ===================
 Widget _glassBubble({
   required Widget child,
   double? height,
@@ -351,13 +330,27 @@ Widget _glassBubble({
       child: Container(
         height: height,
         padding: padding,
-        margin: const EdgeInsets.symmetric(vertical: 8),
+        margin: const EdgeInsets.symmetric(vertical: 6),
         decoration: BoxDecoration(
-          color: Colors.white.withAlpha((0.15 * 255).round()),
+          gradient: LinearGradient(
+            colors: [
+              Colors.white.withAlpha((0.15 * 255).round()),
+              Colors.white.withAlpha((0.05 * 255).round()),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
           borderRadius: BorderRadius.circular(24),
-          border: Border.all(color: Colors.white.withAlpha((0.2 * 255).round())),
+          border: Border.all(
+            color: Colors.white.withAlpha(
+                (0.2 * 255).round()),
+          ),
           boxShadow: const [
-            BoxShadow(color: Colors.black26, blurRadius: 6, offset: Offset(0, 4)),
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 6,
+              offset: Offset(0, 4),
+            ),
           ],
         ),
         child: child,
@@ -365,106 +358,3 @@ Widget _glassBubble({
     ),
   );
 }
-
-// =================== Crop Model ===================
-class Crop {
-  final String name;
-  final double minTemp;
-  final double maxTemp;
-  final double minMoisture;
-  final double maxMoisture;
-  final double minPH;
-  final double maxPH;
-  final double minEC;
-  final double maxEC;
-  final List<String> soilTypes;
-  final double minHumidity;
-  final double maxHumidity;
-  final double minWindSpeed;
-  final double maxWindSpeed;
-
-  Crop({
-    required this.name,
-    required this.minTemp,
-    required this.maxTemp,
-    required this.minMoisture,
-    required this.maxMoisture,
-    required this.minPH,
-    required this.maxPH,
-    required this.minEC,
-    required this.maxEC,
-    required this.soilTypes,
-    required this.minHumidity,
-    required this.maxHumidity,
-    required this.minWindSpeed,
-    required this.maxWindSpeed,
-  });
-}
-
-// Sample crops
-final List<Crop> crops = [
-  Crop(
-    name: 'Rice',
-    minTemp: 20,
-    maxTemp: 35,
-    minMoisture: 60,
-    maxMoisture: 90,
-    minPH: 5.5,
-    maxPH: 7,
-    minEC: 0,
-    maxEC: 2,
-    soilTypes: ['Clay', 'Loamy'],
-    minHumidity: 60,
-    maxHumidity: 100,
-    minWindSpeed: 0,
-    maxWindSpeed: 5,
-  ),
-  Crop(
-    name: 'Wheat',
-    minTemp: 12,
-    maxTemp: 25,
-    minMoisture: 40,
-    maxMoisture: 60,
-    minPH: 6,
-    maxPH: 8,
-    minEC: 0,
-    maxEC: 1.5,
-    soilTypes: ['Loamy', 'Sandy'],
-    minHumidity: 40,
-    maxHumidity: 70,
-    minWindSpeed: 0,
-    maxWindSpeed: 10,
-  ),
-  Crop(
-    name: 'Chili',
-    minTemp: 18,
-    maxTemp: 30,
-    minMoisture: 50,
-    maxMoisture: 70,
-    minPH: 5.8,
-    maxPH: 7.2,
-    minEC: 0,
-    maxEC: 2,
-    soilTypes: ['Loamy', 'Sandy'],
-    minHumidity: 50,
-    maxHumidity: 80,
-    minWindSpeed: 0,
-    maxWindSpeed: 7,
-  ),
-  Crop(
-    name: 'Tomato',
-    minTemp: 20,
-    maxTemp: 30,
-    minMoisture: 50,
-    maxMoisture: 70,
-    minPH: 6,
-    maxPH: 7.5,
-    minEC: 0,
-    maxEC: 1.8,
-    soilTypes: ['Loamy'],
-    minHumidity: 50,
-    maxHumidity: 80,
-    minWindSpeed: 0,
-    maxWindSpeed: 6,
-  ),
-];

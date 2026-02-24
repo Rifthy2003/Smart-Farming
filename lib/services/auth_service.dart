@@ -45,9 +45,7 @@ class AuthService {
   Future<User?> signInWithGoogle() async {
     try {
       await _googleSignIn.initialize(); 
-      final GoogleSignInAccount googleUser = await _googleSignIn.authenticate();
-      
-      if (googleUser == null) return null; 
+      final GoogleSignInAccount googleUser = await _googleSignIn.authenticate(); 
 
       final GoogleSignInAuthentication googleAuth = googleUser.authentication;
 
