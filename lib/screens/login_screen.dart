@@ -166,7 +166,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        SizedBox(height: 100),
+                        SizedBox(height: 40),
                         // ================= TOP CONTENT =================
                         Column(
                           children: [
