@@ -24,7 +24,10 @@ bool FlutterWindow::OnCreate() {
   if (!flutter_controller_->engine() || !flutter_controller_->view()) {
     return false;
   }
-  RegisterPlugins(flutter_controller_->engine());
+  // RegisterPlugins(flutter_controller_->engine());
+  // NOTE: Plugin registration is temporarily disabled to avoid platform-
+  // threading issues from some native plugins on Windows during development.
+  // Re-enable by uncommenting the line above after updating native plugins.
   SetChildContent(flutter_controller_->view()->GetNativeWindow());
 
   flutter_controller_->engine()->SetNextFrameCallback([&]() {
