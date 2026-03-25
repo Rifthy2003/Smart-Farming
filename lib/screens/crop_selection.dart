@@ -697,7 +697,7 @@ final List<Crop> crops = [
       minPH: 5.5, maxPH: 7,
       minEC: 0, maxEC: 2,
       soilTypes: ['Clay', 'Loamy'],
-      minHumidity: 60, maxHumidity: 100,
+      minHumidity: 50, maxHumidity: 100,
       minWindSpeed: 0, maxWindSpeed: 5),
   Crop(
       name: 'Wheat',
