@@ -1,4 +1,46 @@
+🌱 Smart Farming Mobile Application
+  Overview
 
+What if farmers could make smarter decisions using real-time data and AI?
+
+This project is a Smart Farming Mobile Application built using Flutter & IoT technologies to help farmers make data-driven decisions without requiring prior agricultural knowledge.
+
+It improves productivity, reduces crop losses, and promotes smart agriculture.
+
+  Key Features
+ Crop Recommendation System
+Uses real-time sensor data (pH, Soil Moisture, Humidity, Temperature, EC)
+Integrates live weather data via OpenWeather API
+Provides intelligent crop suggestions based on environmental conditions
+
+Plant Disease Detection
+Upload plant images for instant analysis
+Uses PlantNet API for disease identification
+Powered by Gemini AI for accurate insights
+
+ Smart Treatment Plans
+Generates AI-based treatment recommendations
+Helps farmers take quick and effective action
+
+ IoT Integration
+Enables real-time monitoring using sensors
+Supports precision farming
+
+🛠 Tech Stack
+Flutter (Dart)
+ AI & APIs
+Gemini AI (Recommendations & Insights)
+PlantNet API (Disease Detection)
+OpenWeather API (Weather Data)
+
+Hardware (IoT)
+pH Sensor
+Soil Moisture Sensor
+Temperature & Humidity Sensor
+EC Sensor
+
+ Data Handling 
+Firebase / Realtime Database
 
 https://github.com/user-attachments/assets/ed5f4233-6da0-430d-8c8d-adeafe1769ee
 
@@ -34,42 +76,5 @@ https://github.com/user-attachments/assets/ed5f4233-6da0-430d-8c8d-adeafe1769ee
 ![WhatsApp Image 2026-04-08 at 09 41 40](https://github.com/user-attachments/assets/21b230e3-d16d-47ae-a986-4e6ecfa4f510)
 ![WhatsApp Image 2026-04-08 at 09 41 40 (1)](https://github.com/user-attachments/assets/4faa2df3-b650-4edf-b44a-e15b5ebe7dce)
 ![WhatsApp Image 2026-04-08 at 09 41 39](https://github.com/user-attachments/assets/31730c13-44f7-49c9-a84c-1002c242f0d9)
-🌱 Smart Farming Mobile Application
-🚀 Overview
 
-What if farmers could make smarter decisions using real-time data and AI?
 
-This project is a Smart Farming Mobile Application built using Flutter & IoT technologies to help farmers make data-driven decisions without requiring prior agricultural knowledge.
-
-It improves productivity, reduces crop losses, and promotes smart agriculture.
-
-🔍 Key Features
-🌾 Crop Recommendation System
-Uses real-time sensor data (pH, Soil Moisture, Humidity, Temperature, EC)
-Integrates live weather data via OpenWeather API
-Provides intelligent crop suggestions based on environmental conditions
-📸 Plant Disease Detection
-Upload plant images for instant analysis
-Uses PlantNet API for disease identification
-Powered by Gemini AI for accurate insights
-
-💊 Smart Treatment Plans
-Generates AI-based treatment recommendations
-Helps farmers take quick and effective action
-📡 IoT Integration
-Enables real-time monitoring using sensors
-Supports precision farming
-
-🛠 Tech Stack
-Flutter (Dart)
-🧠 AI & APIs
-Gemini AI (Recommendations & Insights)
-PlantNet API (Disease Detection)
-OpenWeather API (Weather Data)
-📡 Hardware (IoT)
-pH Sensor
-Soil Moisture Sensor
-Temperature & Humidity Sensor
-EC Sensor
-🗄 Data Handling 
-Firebase / Realtime Database
