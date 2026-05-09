@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import '../services/auth_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -49,40 +50,94 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
   }
 
   Future<void> _handleSignup() async {
-    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
-      _showSnackBar("Please fill in all required fields.");
-      return;
-    }
-    if (_passwordController.text != _confirmPasswordController.text) {
-      _showSnackBar("Passwords do not match!");
-      return;
-    }
-    if (_passwordController.text.length < 6) {
-      _showSnackBar("Password must be at least 6 characters.");
-      return;
-    }
 
-    setState(() => _isLoading = true);
+  if (_emailController.text.isEmpty ||
+      _passwordController.text.isEmpty) {
+
+    _showSnackBar("Please fill in all required fields.");
+    return;
+  }
+
+  if (!_emailController.text.contains("@")) {
+
+    _showSnackBar("Enter valid email");
+    return;
+  }
+
+  if (_passwordController.text !=
+      _confirmPasswordController.text) {
+
+    _showSnackBar("Passwords do not match!");
+    return;
+  }
+
+  if (_passwordController.text.length < 6) {
+
+    _showSnackBar("Password must be at least 6 characters.");
+    return;
+  }
+
+  setState(() {
+    _isLoading = true;
+  });
+
+  try {
+
     final user = await _authService.signUp(
       _emailController.text.trim(),
       _passwordController.text.trim(),
     );
-    setState(() => _isLoading = false);
 
     if (user != null) {
-      _showSnackBar("Account created successfully!");
-      final username = _usernameController.text.trim().isNotEmpty
-          ? _usernameController.text.trim()
-          : 'Farmer';
-      Navigator.pushReplacementNamed(context, '/home', arguments: username);
-    } else {
-      _showSnackBar("Registration failed. Please try again.");
-    }
-  }
 
-  void _showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+      _showSnackBar("Account created successfully!");
+
+      final username =
+          _usernameController.text.trim().isNotEmpty
+              ? _usernameController.text.trim()
+              : 'Farmer';
+
+      Navigator.pushReplacementNamed(
+        context,
+        '/home',
+        arguments: username,
+      );
+
+    } else {
+
+      _showSnackBar("Registration failed.");
+    }
+
+  } on FirebaseAuthException catch (e) {
+
+    String message = "Signup failed";
+
+    if (e.code == 'email-already-in-use') {
+      message = "Email already in use";
+    }
+    else if (e.code == 'invalid-email') {
+      message = "Invalid email format";
+    }
+    else if (e.code == 'weak-password') {
+      message = "Weak password";
+    }
+    else if (e.code == 'network-request-failed') {
+      message = "Check internet connection";
+    }
+
+    _showSnackBar(message);
+
+  } catch (e) {
+
+    _showSnackBar(e.toString());
+
+  } finally {
+
+    setState(() {
+      _isLoading = false;
+    });
   }
+}
 
   // ================= GLASS CONTAINER =================
   Widget _glassContainer({required Widget child, EdgeInsetsGeometry? padding}) {
@@ -134,6 +189,14 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
       ),
     );
   }
+
+  void _showSnackBar(String message) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(message),
+    ),
+  );
+}
 
   @override
   Widget build(BuildContext context) {
